@@ -14,7 +14,7 @@ export const handler = async (event) => {
 
     // NOTE: in exam sandbox we often accept any credentials — replace with real auth if needed
     if (!username || !password) {
-      return response(400, { error: 'username & password required' })
+      return error({ error: 'username & password required' }, 400)
     }
 
     // create simple JWT
@@ -30,13 +30,9 @@ export const handler = async (event) => {
       }
     }))
 
-    return response(200, { token })
+    return success({ token })
   } catch (err) {
     console.error(err)
-    return response(500, { error: 'internal error' })
+    return error({ error: 'internal error' })
   }
-}
-
-function response(statusCode, body) {
-  return { statusCode, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) }
 }
